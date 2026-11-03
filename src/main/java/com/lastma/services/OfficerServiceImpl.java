@@ -6,6 +6,7 @@ import com.lastma.dtos.requests.LoginOfficerRequest;
 import com.lastma.dtos.requests.RegisterOfficerRequest;
 import com.lastma.dtos.response.RegisterOfficerResponse;
 import com.lastma.exceptions.DuplicateEmailException;
+import com.lastma.exceptions.OffenceException;
 import com.lastma.exceptions.OfficerException;
 import com.lastma.validator.OfficerRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,17 @@ public class OfficerServiceImpl implements OfficerService{
 
     @Override
     public RegisterOfficerResponse loginOfficer(LoginOfficerRequest request) {
-        Officer officer = officerRepository.findByEmail(request.getEmail());
-        if(officer == null || !officer.getPassword().equals(request.getPassword())) {
+        Optional <Officer> result = officerRepository.findByEmail(request.getEmail());
+        if(result.isEmpty()) {
             throw new OfficerException("Invalid email or password");
         }
+
+        Officer officer = result.get();
+
+        if(request.getPassword() == null || !request.getPassword().equals(officer.getPassword())) {
+            throw new OfficerException("Invalid email or password");
+        }
+
         return map(officer);
     }
 }

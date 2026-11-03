@@ -11,6 +11,8 @@ import com.lastma.validator.DriverRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.lastma.utils.DriverMapper.map;
 
 @Service
@@ -36,21 +38,30 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public RegisterDriverResponse findDriverByEmail(String email) {
-        Driver driver = driverRepository.findByEmail(email);
-        if(driver == null) {
+        Optional<Driver> result = driverRepository.findByEmail(email);
+
+        if(result.isEmpty()) {
             throw new DriverException("Driver not found");
         }
+
+        Driver driver = result.get();
 
         return map(driver);
     }
 
     @Override
     public RegisterDriverResponse loginDriver(LoginDriverRequest request) {
-        Driver driver = driverRepository.findByEmail(request.getEmail());
-        if(driver == null || !driver.getPassword().equals(request.getPassword())) {
+        Optional <Driver> result = driverRepository.findByEmail(request.getEmail());
+
+        if(result.isEmpty()) {
             throw new DriverException("Invalid email or password");
         }
 
+        Driver driver = result.get();
+
+        if(request.getPassword() == null || !request.getPassword().equals(driver.getPassword())) {
+            throw new DriverException("Invalid email or password");
+        }
         return map(driver);
     }
 

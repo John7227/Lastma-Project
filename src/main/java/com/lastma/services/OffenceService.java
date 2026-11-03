@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface OffenceService {
 
     AddOffenceResponse addOffence(AddOffenceRequest request);
+    AddOffenceResponse findOffenceByCode(String code);
 }
