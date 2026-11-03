@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.lastma.utils.TicketMapper.map;
+
 @Service
 public class TicketServiceImpl implements  TicketService {
 
@@ -30,7 +32,6 @@ public class TicketServiceImpl implements  TicketService {
     @Override
     public IssueTicketResponse issueTicket(IssueTicketRequest request) {
         Optional<Vehicle> vehicleResult = vehicleRepository.findByRegistrationNumber(request.getVehicleRegistrationNumber());
-
         if(vehicleResult.isEmpty()) {
             throw new VehicleException("Vehicle not found");
         }
@@ -38,7 +39,6 @@ public class TicketServiceImpl implements  TicketService {
 
 
         Optional<Offence> offenceResult = offenceRepository.findByCode(request.getOffenceCode());
-
         if(offenceResult.isEmpty()) {
             throw new OffenceException("Offence not found");
         }
@@ -54,12 +54,7 @@ public class TicketServiceImpl implements  TicketService {
 
         Ticket savedTicket = ticketRepository.save(ticket);
 
-        IssueTicketResponse response = new IssueTicketResponse();
-        response.setId(savedTicket.getId());
-        response.setOffenceCode(savedTicket.getOffenceCode());
-        response.setVehicleRegistrationNumber(savedTicket.getVehicleRegistrationNumber());
-
-        return response;
+        return map(savedTicket);
     }
 
 }
