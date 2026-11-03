@@ -5,6 +5,7 @@ import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.RegisterVehicleRequest;
 import com.lastma.dtos.response.RegisterVehicleResponse;
 import com.lastma.exceptions.VehicleException;
+import com.lastma.validator.VehicleRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public RegisterVehicleResponse registerVehicle(RegisterVehicleRequest request) {
+
+        VehicleRequestValidator.validator(request);
         if(vehicleRepository.existsByRegistrationNumber(request.getRegistrationNumber())) {
             throw new VehicleException("Vehicle is already registered");
         }

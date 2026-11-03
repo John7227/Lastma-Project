@@ -7,6 +7,6 @@ public class RegisterVehicleRequest {
 
     private String registrationNumber;
     private String make;
-    private String mode;
+    private String model;
     private String colour;
 }

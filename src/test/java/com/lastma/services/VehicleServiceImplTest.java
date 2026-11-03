@@ -32,7 +32,7 @@ class VehicleServiceImplTest {
         RegisterVehicleRequest request = new RegisterVehicleRequest();
         request.setRegistrationNumber("XYZ-123XY");
         request.setMake("Toyota");
-        request.setMode("Corolla");
+        request.setModel("Corolla");
         request.setColour("Black");
 
         RegisterVehicleResponse savedVehicle = vehicleService.registerVehicle(request);
@@ -48,19 +48,129 @@ class VehicleServiceImplTest {
         RegisterVehicleRequest firstVehicle = new RegisterVehicleRequest();
         firstVehicle.setRegistrationNumber("XYZ-123XY");
         firstVehicle.setMake("Toyota");
-        firstVehicle.setMode("Corolla");
+        firstVehicle.setModel("Corolla");
         firstVehicle.setColour("Black");
         vehicleService.registerVehicle(firstVehicle);
 
         RegisterVehicleRequest duplicateVehicle = new RegisterVehicleRequest();
         duplicateVehicle.setRegistrationNumber("XYZ-123XY");
         duplicateVehicle.setMake("Honda");
-        duplicateVehicle.setMode("Civic");
+        duplicateVehicle.setModel("Civic");
         duplicateVehicle.setColour("White");
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(duplicateVehicle));
         assertEquals(1, vehicleRepository.count());
     }
 
+    @Test
+    public void testRegisterVehicleWithoutARegistrationNumber_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
 
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber(" ");
+        request.setMake("Toyota");
+        request.setModel("Corolla");
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWhenTheRegistrationNumberIsNull_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber(null);
+        request.setMake("Toyota");
+        request.setModel("Corolla");
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWithoutAMake_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake(" ");
+        request.setModel("Corolla");
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWhenTheMakeIsNull_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake(null);
+        request.setModel("Corolla");
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWithoutAModel_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake("Toyota");
+        request.setModel(" ");
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWhenTheModelIsNull_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake("Toyota");
+        request.setModel(null);
+        request.setColour("Black");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWithoutAColour_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake("Toyota");
+        request.setModel("Corolla");
+        request.setColour(" ");
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testRegisterVehicleWhenTheColourIsNull_ThrowsException() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest request = new RegisterVehicleRequest();
+        request.setRegistrationNumber("XYZ-123XY");
+        request.setMake("Toyota");
+        request.setModel("Corolla");
+        request.setColour(null);
+
+        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
+        assertEquals(0, vehicleRepository.count());
+    }
 }

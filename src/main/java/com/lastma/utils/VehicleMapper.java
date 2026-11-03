@@ -10,7 +10,7 @@ public class VehicleMapper {
         Vehicle vehicle = new Vehicle();
         vehicle.setRegistrationNumber(request.getRegistrationNumber());
         vehicle.setMake(request.getMake());
-        vehicle.setModel(request.getMode());
+        vehicle.setModel(request.getModel());
         vehicle.setColour(request.getColour());
         return vehicle;
     }
@@ -20,7 +20,7 @@ public class VehicleMapper {
         response.setId(vehicle.getId());
         response.setRegistrationNumber(vehicle.getRegistrationNumber());
         response.setMake(vehicle.getMake());
-        response.setMode(vehicle.getModel());
+        response.setModel(vehicle.getModel());
         response.setColour(vehicle.getColour());
         return response;
     }
