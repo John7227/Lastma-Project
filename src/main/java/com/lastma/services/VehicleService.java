@@ -1,4 +1,4 @@
 package com.lastma.services;
 
-public class VehicleService {
+public interface VehicleService {
 }
