@@ -10,6 +10,8 @@ import com.lastma.validator.OffenceRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.lastma.utils.OffenceMapper.map;
@@ -45,5 +47,16 @@ public class OffenceServiceImpl implements OffenceService {
         }
         Offence offence = result.get();
         return map(offence);
+    }
+
+    @Override
+    public List<AddOffenceResponse> findAllOffences() {
+        List<Offence> offences = offenceRepository.findAll();
+        List<AddOffenceResponse> responses = new ArrayList<>();
+
+        for(Offence offence: offences) {
+            responses.add(map(offence));
+        }
+        return responses;
     }
 }

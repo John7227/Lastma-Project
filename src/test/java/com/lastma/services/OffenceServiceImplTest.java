@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -85,15 +87,15 @@ class OffenceServiceImplTest {
         offenceService.addOffence(request);
 
         assertEquals(1, offenceRepository.count());
-        AddOffenceRequest requests = new AddOffenceRequest();
-        requests.setCode("DAN");
-        requests.setName("Illegal U-turn");
-        requests.setDescription("Illegal U-turn");
-        requests.setPenaltyPoints(3);
-        requests.setFirstOffenceFine(20000);
-        requests.setSubsequentOffenceFine(30000);
-        requests.setAdditionalPenaltyDescription("Driver training");
-        offenceService.addOffence(requests);
+        AddOffenceRequest request2 = new AddOffenceRequest();
+        request2.setCode("DAN");
+        request2.setName("Illegal U-turn");
+        request2.setDescription("Illegal U-turn");
+        request2.setPenaltyPoints(3);
+        request2.setFirstOffenceFine(20000);
+        request2.setSubsequentOffenceFine(30000);
+        request2.setAdditionalPenaltyDescription("Driver training");
+        offenceService.addOffence(request2);
 
         assertEquals(2, offenceRepository.count());
     }
@@ -220,6 +222,35 @@ class OffenceServiceImplTest {
     @Test
     public void testFindOffenceByCode_WhenNotFound_ThrowsException() {
         assertThrows(OffenceException.class, ()-> offenceService.findOffenceByCode("JOH"));
+    }
+
+    @Test
+    public void testFindAllOffences_ReturnsAllOffences() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest first = new AddOffenceRequest();
+        first.setCode("JOH");
+        first.setName("Traffic Control Violation");
+        first.setDescription("Disobeying traffic control personnel");
+        first.setPenaltyPoints(2);
+        first.setFirstOffenceFine(20000);
+        first.setSubsequentOffenceFine(30000);
+        first.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+        offenceService.addOffence(first);
+
+        assertEquals(1, offenceRepository.count());
+        AddOffenceRequest second = new AddOffenceRequest();
+        second.setCode("DAN");
+        second.setName("Illegal U-turn");
+        second.setDescription("Illegal U-turn");
+        second.setPenaltyPoints(3);
+        second.setFirstOffenceFine(20000);
+        second.setSubsequentOffenceFine(30000);
+        second.setAdditionalPenaltyDescription("Driver training");
+        offenceService.addOffence(second);
+
+        List<AddOffenceResponse> offences = offenceService.findAllOffences();
+
+        assertEquals(2, offences.size());
     }
 
 }
