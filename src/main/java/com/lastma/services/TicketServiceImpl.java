@@ -9,6 +9,7 @@ import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.IssueTicketRequest;
 import com.lastma.dtos.response.IssueTicketResponse;
 import com.lastma.exceptions.OffenceException;
+import com.lastma.exceptions.TicketException;
 import com.lastma.exceptions.VehicleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,17 @@ public class TicketServiceImpl implements  TicketService {
         Ticket savedTicket = ticketRepository.save(ticket);
 
         return map(savedTicket);
+    }
+
+    @Override
+    public IssueTicketResponse findTicketById(String id) {
+        Optional<Ticket> result = ticketRepository.findById(id);
+        if(result.isEmpty()) {
+            throw new TicketException("Ticket not found");
+        }
+
+        Ticket ticket = result.get();
+        return map(ticket);
     }
 
 }

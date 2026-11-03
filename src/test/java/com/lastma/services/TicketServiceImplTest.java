@@ -1,12 +1,14 @@
 package com.lastma.services;
 
 import com.lastma.data.models.Offence;
+import com.lastma.data.models.Ticket;
 import com.lastma.data.models.Vehicle;
 import com.lastma.data.repositories.OffenceRepository;
 import com.lastma.data.repositories.TicketRepository;
 import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.IssueTicketRequest;
 import com.lastma.dtos.response.IssueTicketResponse;
+import com.lastma.exceptions.TicketException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,4 +67,21 @@ class TicketServiceImplTest {
         assertEquals(1, ticketRepository.count());
     }
 
+    @Test
+    public void testFindTicketById_ReturnsTicketWhenFound() {
+        Ticket ticket = new Ticket();
+        ticket.setVehicleRegistrationNumber("XYZ-123XY");
+        ticket.setOffenceCode("JOH");
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        IssueTicketResponse response = ticketService.findTicketById(savedTicket.getId());
+        assertEquals(savedTicket.getId(), response.getId());
+        assertEquals("XYZ-123XY", response.getVehicleRegistrationNumber());
+        assertEquals("JOH", response.getOffenceCode());
+    }
+
+    @Test
+    public void testFindTicketById_ThrowsExceptionWhenNotFound() {
+        assertThrows(TicketException.class, ()-> ticketService.findTicketById("343DES-fats"));
+    }
 }

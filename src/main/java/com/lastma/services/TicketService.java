@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface TicketService {
 
     IssueTicketResponse issueTicket(IssueTicketRequest request);
+    IssueTicketResponse findTicketById(String id);
 }
