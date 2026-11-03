@@ -96,7 +96,33 @@ class OfficerServiceImplTest {
     }
 
     @Test
+    public void testRegisterOfficerWhenNameIsNull_ThrowsException() {
+        assertEquals(0, officerRepository.count());
+        RegisterOfficerRequest request = new RegisterOfficerRequest();
+        request.setFullName(null);
+        request.setEmail("lawjoh20@gmail.com");
+        request.setPassword("Law321");
+        request.setPhoneNumber("1234567890");
+
+        assertThrows(OfficerException.class, ()-> officerService.registerOfficer(request));
+        assertEquals(0, officerRepository.count());
+    }
+
+    @Test
     public void testRegisterOfficerWithoutAnEmail_ThrowsException() {
+        assertEquals(0, officerRepository.count());
+        RegisterOfficerRequest request = new RegisterOfficerRequest();
+        request.setFullName("Lawrence John");
+        request.setEmail(" ");
+        request.setPassword("Law321");
+        request.setPhoneNumber("1234567890");
+
+        assertThrows(OfficerException.class, ()-> officerService.registerOfficer(request));
+        assertEquals(0, officerRepository.count());
+    }
+
+    @Test
+    public void testRegisterOfficerWhenTheEmailIsNull_ThrowsException() {
         assertEquals(0, officerRepository.count());
         RegisterOfficerRequest request = new RegisterOfficerRequest();
         request.setFullName("Lawrence John");

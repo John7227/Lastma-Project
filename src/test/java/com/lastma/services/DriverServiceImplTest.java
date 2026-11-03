@@ -95,7 +95,33 @@ class  DriverServiceImplTest {
     }
 
     @Test
+    public void testRegisterDriverWhenNameIsNull_ThrowsException() {
+        assertEquals(0, driverRepository.count());
+        RegisterDriverRequest request = new RegisterDriverRequest();
+        request.setFullName(null);
+        request.setEmail("lawjoh20@gmail.com");
+        request.setPassword("Law321");
+        request.setPhoneNumber("1234567890");
+
+        assertThrows(DriverException.class, ()-> driverService.registerDriver(request));
+        assertEquals(0, driverRepository.count());
+    }
+
+    @Test
     public void testRegisterDriverWithoutAnEmail_ThrowsException() {
+        assertEquals(0, driverRepository.count());
+        RegisterDriverRequest request = new RegisterDriverRequest();
+        request.setFullName("Lawrence John");
+        request.setEmail(" ");
+        request.setPassword("Law321");
+        request.setPhoneNumber("1234567890");
+
+        assertThrows(DriverException.class, ()-> driverService.registerDriver(request));
+        assertEquals(0, driverRepository.count());
+    }
+
+    @Test
+    public void testRegisterDriverWhenEmailIsNull_ThrowsException() {
         assertEquals(0, driverRepository.count());
         RegisterDriverRequest request = new RegisterDriverRequest();
         request.setFullName("Lawrence John");

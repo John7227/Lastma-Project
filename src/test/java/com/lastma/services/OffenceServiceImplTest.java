@@ -4,6 +4,7 @@ import com.lastma.data.repositories.OffenceRepository;
 import com.lastma.dtos.requests.AddOffenceRequest;
 import com.lastma.dtos.response.AddOffenceResponse;
 import com.lastma.exceptions.DuplicateOffenceCodeException;
+import com.lastma.exceptions.OffenceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,13 +88,45 @@ class OffenceServiceImplTest {
         requests.setCode("DAN");
         requests.setName("Illegal U-turn");
         requests.setDescription("Illegal U-turn");
-        requests.setPenaltyPoints(1);
+        requests.setPenaltyPoints(3);
         requests.setFirstOffenceFine(20000);
         requests.setSubsequentOffenceFine(30000);
         requests.setAdditionalPenaltyDescription("Driver training");
         offenceService.addOffence(requests);
 
         assertEquals(2, offenceRepository.count());
+    }
+
+    @Test
+    public void testAddOffenceWithoutACode_ThrowsException() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest request = new AddOffenceRequest();
+        request.setCode(" ");
+        request.setName("Traffic Control Violation");
+        request.setDescription("Disobeying traffic control personnel");
+        request.setPenaltyPoints(2);
+        request.setFirstOffenceFine(20000);
+        request.setSubsequentOffenceFine(30000);
+        request.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+
+        assertThrows(OffenceException.class, ()-> offenceService.addOffence(request));
+        assertEquals(0, offenceRepository.count());
+    }
+
+    @Test
+    public void testAddOffenceWhenCodeIsNull_ThrowsException() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest request = new AddOffenceRequest();
+        request.setCode(null);
+        request.setName("Traffic Control Violation");
+        request.setDescription("Disobeying traffic control personnel");
+        request.setPenaltyPoints(2);
+        request.setFirstOffenceFine(20000);
+        request.setSubsequentOffenceFine(30000);
+        request.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+
+        assertThrows(OffenceException.class, ()-> offenceService.addOffence(request));
+        assertEquals(0, offenceRepository.count());
     }
 
 }
