@@ -254,7 +254,7 @@ class OffenceServiceImplTest {
     }
 
     @Test
-    public void testDeactivateOffenceSetsActiveToFalse() {
+    public void testDeactivateOffence_SetsActiveToFalse() {
         assertEquals(0, offenceRepository.count());
         AddOffenceRequest first = new AddOffenceRequest();
         first.setCode("JOH");
@@ -272,6 +272,30 @@ class OffenceServiceImplTest {
 
         assertFalse(deactivated.isActive());
         assertEquals(1, offenceRepository.count());
+    }
+
+    @Test
+    public void testActivateOffence_SetsActiveToTrue() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest first = new AddOffenceRequest();
+        first.setCode("JOH");
+        first.setName("Traffic Control Violation");
+        first.setDescription("Disobeying traffic control personnel");
+        first.setPenaltyPoints(2);
+        first.setFirstOffenceFine(20000);
+        first.setSubsequentOffenceFine(30000);
+        first.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+        AddOffenceResponse addedOffence = offenceService.addOffence(first);
+
+        assertTrue(addedOffence.isActive());
+
+        AddOffenceResponse deactivated = offenceService.deactivateOffence("JOH");
+        assertFalse(deactivated.isActive());
+
+        AddOffenceResponse activated = offenceService.activateOffence("JOH");
+        assertTrue(activated.isActive());
+        assertEquals(1, offenceRepository.count());
+
     }
 
 }

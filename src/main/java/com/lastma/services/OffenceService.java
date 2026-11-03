@@ -13,4 +13,5 @@ public interface OffenceService {
     AddOffenceResponse findOffenceByCode(String code);
     List<AddOffenceResponse> findAllOffences();
     AddOffenceResponse deactivateOffence(String code);
+    AddOffenceResponse activateOffence(String code);
 }

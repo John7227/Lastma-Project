@@ -10,6 +10,7 @@ import com.lastma.validator.OffenceRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +70,20 @@ public class OffenceServiceImpl implements OffenceService {
         }
         Offence offence = result.get();
         offence.setActive(false);
+
+        Offence savedOffence = offenceRepository.save(offence);
+        return map(savedOffence);
+    }
+
+    @Override
+    public AddOffenceResponse activateOffence(String code) {
+        Optional<Offence> result = offenceRepository.findByCode(code);
+
+        if(result.isEmpty()) {
+            throw new OffenceException("Offence not found");
+        }
+        Offence offence = result.get();
+        offence.setActive(true);
 
         Offence savedOffence = offenceRepository.save(offence);
         return map(savedOffence);
