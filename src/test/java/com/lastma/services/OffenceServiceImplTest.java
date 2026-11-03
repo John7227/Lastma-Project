@@ -217,4 +217,9 @@ class OffenceServiceImplTest {
 
     }
 
+    @Test
+    public void testFindOffenceByCode_WhenNotFound_ThrowsException() {
+        assertThrows(OffenceException.class, ()-> offenceService.findOffenceByCode("JOH"));
+    }
+
 }

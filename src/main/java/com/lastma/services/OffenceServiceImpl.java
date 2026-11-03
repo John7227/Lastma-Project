@@ -6,6 +6,7 @@ import com.lastma.dtos.requests.AddOffenceRequest;
 import com.lastma.dtos.response.AddOffenceResponse;
 import com.lastma.exceptions.DuplicateOffenceCodeException;
 import com.lastma.exceptions.OffenceException;
+import com.lastma.validator.OffenceRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +22,8 @@ public class OffenceServiceImpl implements OffenceService {
 
     @Override
     public AddOffenceResponse addOffence(AddOffenceRequest request) {
-        if(request.getCode() == null || request.getCode().isBlank()) {
-            throw new OffenceException("Code is required");
-        }
-        if(request.getName() == null || request.getName().isBlank()) {
-            throw new OffenceException("Name is required");
-        }
-        if(request.getDescription() == null || request.getDescription().isBlank()) {
-            throw new OffenceException("Description is required");
-        }
 
+        OffenceRequestValidator.validator(request);
         if(offenceRepository.existsByCode(request.getCode())) {
             throw new DuplicateOffenceCodeException("Offence code already exists");
         }
