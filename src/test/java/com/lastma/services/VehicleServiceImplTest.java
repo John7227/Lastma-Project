@@ -3,7 +3,6 @@ package com.lastma.services;
 import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.RegisterVehicleRequest;
 import com.lastma.dtos.response.RegisterVehicleResponse;
-import com.lastma.exceptions.OfficerException;
 import com.lastma.exceptions.VehicleException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -24,7 +24,7 @@ class OfficerServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        officerRepository.deleteAll();;
+        officerRepository.deleteAll();
     }
 
     @Test
