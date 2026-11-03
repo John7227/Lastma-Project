@@ -21,6 +21,7 @@ class VehicleServiceImplTest {
 
     @Test
     public void testThatRegisterVehicle_SavesVehicle_AndCountIsOne() {
+        vehicleRepository.deleteAll();
         assertEquals(0, vehicleRepository.count());
 
         RegisterVehicleRequest request = new RegisterVehicleRequest();

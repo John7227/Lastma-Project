@@ -7,6 +7,8 @@ import com.lastma.dtos.response.RegisterVehicleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.lastma.utils.VehicleMapper.map;
+
 @Service
 public class VehicleServiceImpl implements VehicleService {
 
@@ -15,21 +17,10 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public RegisterVehicleResponse registerVehicle(RegisterVehicleRequest request) {
-        Vehicle vehicle = new Vehicle();
-        vehicle.setRegistrationNumber(request.getRegistrationNumber());
-        vehicle.setMake(request.getMake());
-        vehicle.setModel(request.getMode());
-        vehicle.setColour(request.getColour());
 
-        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+        Vehicle newVehicle = map(request);
+        Vehicle savedVehicle = vehicleRepository.save(newVehicle);
 
-        RegisterVehicleResponse response = new RegisterVehicleResponse();
-        response.setId(savedVehicle.getId());
-        response.setRegistrationNumber(savedVehicle.getRegistrationNumber());
-        response.setMake(savedVehicle.getMake());
-        response.setMode(savedVehicle.getModel());
-        response.setColour(savedVehicle.getColour());
-
-        return response;
+        return map(savedVehicle);
     }
 }
