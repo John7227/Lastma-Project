@@ -59,4 +59,18 @@ public class OffenceServiceImpl implements OffenceService {
         }
         return responses;
     }
+
+    @Override
+    public AddOffenceResponse deactivateOffence(String code) {
+        Optional<Offence> result = offenceRepository.findByCode(code);
+
+        if(result.isEmpty()) {
+            throw new OffenceException("Offence not found");
+        }
+        Offence offence = result.get();
+        offence.setActive(false);
+
+        Offence savedOffence = offenceRepository.save(offence);
+        return map(savedOffence);
+    }
 }
