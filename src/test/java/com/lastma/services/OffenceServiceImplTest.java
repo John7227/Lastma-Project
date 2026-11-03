@@ -1,0 +1,44 @@
+package com.lastma.services;
+
+import com.lastma.data.repositories.OffenceRepository;
+import com.lastma.dtos.requests.AddOffenceRequest;
+import com.lastma.dtos.response.AddOffenceResponse;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class OffenceServiceImplTest {
+
+    @Autowired
+    private OffenceService offenceService;
+
+    @Autowired
+    private OffenceRepository offenceRepository;
+
+    @Test
+    public void testAddOffence_SavesOffence() {
+        offenceRepository.deleteAll();
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest request = new AddOffenceRequest();
+        request.setCode("JOH");
+        request.setName("Traffic Control Violation");
+        request.setDescription("Disobeying traffic control personnel");
+        request.setPenaltyPoints(2);
+        request.setFirstOffenceFine(20000);
+        request.setSubsequentOffenceFine(30000);
+        request.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+
+        AddOffenceResponse savedOffence = offenceService.addOffence(request);
+
+        assertNotNull(savedOffence.getId());
+        assertEquals("JOH", savedOffence.getCode());
+        assertEquals("Traffic Control Violation", savedOffence.getName());
+        assertEquals(20000, savedOffence.getFirstOffenceFine());
+        assertTrue(savedOffence.isActive());
+        assertEquals(1, offenceRepository.count());
+    }
+
+}

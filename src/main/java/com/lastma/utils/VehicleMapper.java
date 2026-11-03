@@ -7,12 +7,12 @@ import com.lastma.dtos.response.RegisterVehicleResponse;
 public class VehicleMapper {
 
     public static Vehicle map(RegisterVehicleRequest request) {
-        Vehicle vehicle = new Vehicle();
-        vehicle.setRegistrationNumber(request.getRegistrationNumber());
-        vehicle.setMake(request.getMake());
-        vehicle.setModel(request.getModel());
-        vehicle.setColour(request.getColour());
-        return vehicle;
+        Vehicle newVehicle = new Vehicle();
+        newVehicle.setRegistrationNumber(request.getRegistrationNumber());
+        newVehicle.setMake(request.getMake());
+        newVehicle.setModel(request.getModel());
+        newVehicle.setColour(request.getColour());
+        return newVehicle;
     }
 
     public static RegisterVehicleResponse map(Vehicle vehicle) {

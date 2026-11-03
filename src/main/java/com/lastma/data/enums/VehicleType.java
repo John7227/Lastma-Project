@@ -8,6 +8,10 @@ public enum VehicleType {
     TIPPER,
     TANKER,
     BUS,
+    MINIBUS,
     TRUCK,
     MOTORCYCLE,
+    VAN,
+    TRAILER,
+
 }
