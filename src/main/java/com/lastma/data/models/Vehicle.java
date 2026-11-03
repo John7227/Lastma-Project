@@ -19,4 +19,6 @@ public class Vehicle {
     private VehicleType Type;
     private String driverId;
     private String plateNumber;
+    private String colour;
+    private String registrationNumber;
 }
