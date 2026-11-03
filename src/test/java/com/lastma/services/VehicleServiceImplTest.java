@@ -3,6 +3,8 @@ package com.lastma.services;
 import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.RegisterVehicleRequest;
 import com.lastma.dtos.response.RegisterVehicleResponse;
+import com.lastma.exceptions.DuplicateVehicleException;
+import com.lastma.exceptions.OffenceException;
 import com.lastma.exceptions.VehicleException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +60,7 @@ class VehicleServiceImplTest {
         duplicateVehicle.setModel("Civic");
         duplicateVehicle.setColour("White");
 
-        assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(duplicateVehicle));
+        assertThrows(DuplicateVehicleException.class, ()-> vehicleService.registerVehicle(duplicateVehicle));
         assertEquals(1, vehicleRepository.count());
     }
 

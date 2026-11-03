@@ -3,6 +3,8 @@ package com.lastma.services;
 import com.lastma.data.repositories.OffenceRepository;
 import com.lastma.dtos.requests.AddOffenceRequest;
 import com.lastma.dtos.response.AddOffenceResponse;
+import com.lastma.exceptions.DuplicateOffenceCodeException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,9 +20,13 @@ class OffenceServiceImplTest {
     @Autowired
     private OffenceRepository offenceRepository;
 
+    @BeforeEach
+    public void setUp() {
+        offenceRepository.deleteAll();
+    }
+
     @Test
     public void testAddOffence_SavesOffence() {
-        offenceRepository.deleteAll();
         assertEquals(0, offenceRepository.count());
         AddOffenceRequest request = new AddOffenceRequest();
         request.setCode("JOH");
@@ -38,6 +44,28 @@ class OffenceServiceImplTest {
         assertEquals("Traffic Control Violation", savedOffence.getName());
         assertEquals(20000, savedOffence.getFirstOffenceFine());
         assertTrue(savedOffence.isActive());
+        assertEquals(1, offenceRepository.count());
+    }
+
+    @Test
+    public void testAddOffence_duplicateCode_throwsException() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest request = new AddOffenceRequest();
+        request.setCode("JOH");
+        request.setName("Traffic Control Violation");
+        request.setDescription("Disobeying traffic control personnel");
+        request.setPenaltyPoints(2);
+        request.setFirstOffenceFine(20000);
+        request.setSubsequentOffenceFine(30000);
+        request.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+        offenceService.addOffence(request);
+
+        AddOffenceRequest duplicate = new AddOffenceRequest();
+        duplicate.setCode("JOH");
+        duplicate.setName("Traffic Control Violation");
+
+        assertThrows(DuplicateOffenceCodeException.class, ()-> offenceService.addOffence(duplicate));
+
         assertEquals(1, offenceRepository.count());
     }
 
