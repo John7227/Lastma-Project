@@ -3,6 +3,7 @@ package com.lastma.services;
 import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.RegisterVehicleRequest;
 import com.lastma.dtos.response.RegisterVehicleResponse;
+import com.lastma.exceptions.OfficerException;
 import com.lastma.exceptions.VehicleException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -172,5 +173,53 @@ class VehicleServiceImplTest {
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
+    }
+
+    @Test
+    public void testFindVehicleById_ReturnsVehicle() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest firstVehicle = new RegisterVehicleRequest();
+        firstVehicle.setRegistrationNumber("XYZ-123XY");
+        firstVehicle.setMake("Toyota");
+        firstVehicle.setModel("Corolla");
+        firstVehicle.setColour("Black");
+        RegisterVehicleResponse registered = vehicleService.registerVehicle(firstVehicle);
+
+        RegisterVehicleResponse foundVehicle = vehicleService.findVehicleById(registered.getId());
+        assertEquals("XYZ-123XY", foundVehicle.getRegistrationNumber());
+        assertEquals("Toyota", foundVehicle.getMake());
+        assertEquals("Corolla", foundVehicle.getModel());
+        assertEquals(registered.getId(), foundVehicle.getId());
+    }
+
+    @Test
+    public void testFindVehicleById_WhenNotFound_ThrowsException() {
+        assertThrows(VehicleException.class, ()-> vehicleService.findVehicleById("507f1f77bcf86cd799439011"));
+
+    }
+
+    @Test
+    public void testFindVehicleByRegistrationNumber_ReturnsVehicle() {
+        assertEquals(0, vehicleRepository.count());
+
+        RegisterVehicleRequest firstVehicle = new RegisterVehicleRequest();
+        firstVehicle.setRegistrationNumber("XYZ-123XY");
+        firstVehicle.setMake("Toyota");
+        firstVehicle.setModel("Corolla");
+        firstVehicle.setColour("Black");
+        RegisterVehicleResponse registered = vehicleService.registerVehicle(firstVehicle);
+
+        RegisterVehicleResponse foundVehicle = vehicleService.findVehicleByRegistrationNumber("XYZ-123XY");
+        assertEquals("XYZ-123XY", foundVehicle.getRegistrationNumber());
+        assertEquals("Toyota", foundVehicle.getMake());
+        assertEquals("Corolla", foundVehicle.getModel());
+        assertEquals(registered.getId(), foundVehicle.getId());
+    }
+
+    @Test
+    public void testFindVehicleByRegistrationNumber_WhenNotFound_ThrowsException() {
+        assertThrows(VehicleException.class, ()-> vehicleService.findVehicleByRegistrationNumber("XYZ-123XY"));
+
     }
 }

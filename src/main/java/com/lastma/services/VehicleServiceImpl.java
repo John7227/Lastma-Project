@@ -9,6 +9,8 @@ import com.lastma.validator.VehicleRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.lastma.utils.VehicleMapper.map;
 
 @Service
@@ -29,6 +31,29 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle savedVehicle = vehicleRepository.save(newVehicle);
 
         return map(savedVehicle);
+    }
+
+    @Override
+    public RegisterVehicleResponse findVehicleById(String id) {
+        Optional<Vehicle> result = vehicleRepository.findById(id);
+        if(result.isEmpty()) {
+            throw new VehicleException("Vehicle not found");
+        }
+        Vehicle vehicle = result.get();
+
+        return map(vehicle);
+    }
+
+    @Override
+    public RegisterVehicleResponse findVehicleByRegistrationNumber(String registrationNumber) {
+        Optional<Vehicle> result = vehicleRepository.findByRegistrationNumber(registrationNumber);
+
+        if(result.isEmpty()) {
+            throw new VehicleException("Vehicle not found");
+        }
+        Vehicle vehicle = result.get();
+
+        return map(vehicle);
     }
 
 }

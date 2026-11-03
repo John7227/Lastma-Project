@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 public interface VehicleService {
 
     RegisterVehicleResponse registerVehicle(RegisterVehicleRequest request);
+    RegisterVehicleResponse findVehicleById(String id);
+    RegisterVehicleResponse findVehicleByRegistrationNumber(String registrationNumber);
 }
