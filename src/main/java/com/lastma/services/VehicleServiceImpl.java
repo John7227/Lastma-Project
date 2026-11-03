@@ -27,4 +27,5 @@ public class VehicleServiceImpl implements VehicleService {
 
         return map(savedVehicle);
     }
+
 }
