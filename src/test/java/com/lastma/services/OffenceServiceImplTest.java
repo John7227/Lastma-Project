@@ -69,4 +69,31 @@ class OffenceServiceImplTest {
         assertEquals(1, offenceRepository.count());
     }
 
+    @Test
+    public void testAddOffenceWithDifferentCodesSucceeds_AndCountIsTwo() {
+        assertEquals(0, offenceRepository.count());
+        AddOffenceRequest request = new AddOffenceRequest();
+        request.setCode("JOH");
+        request.setName("Traffic Control Violation");
+        request.setDescription("Disobeying traffic control personnel");
+        request.setPenaltyPoints(2);
+        request.setFirstOffenceFine(20000);
+        request.setSubsequentOffenceFine(30000);
+        request.setAdditionalPenaltyDescription("Vehicle impoundment and LASDRI training");
+        offenceService.addOffence(request);
+
+        assertEquals(1, offenceRepository.count());
+        AddOffenceRequest requests = new AddOffenceRequest();
+        requests.setCode("DAN");
+        requests.setName("Illegal U-turn");
+        requests.setDescription("Illegal U-turn");
+        requests.setPenaltyPoints(1);
+        requests.setFirstOffenceFine(20000);
+        requests.setSubsequentOffenceFine(30000);
+        requests.setAdditionalPenaltyDescription("Driver training");
+        offenceService.addOffence(requests);
+
+        assertEquals(2, offenceRepository.count());
+    }
+
 }
