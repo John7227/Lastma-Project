@@ -22,4 +22,6 @@ public class Ticket {
     private int violationFee;
     private LocalDate issuedDate;
     private LocalDate dueDate;
+    private String offenceCode;
+    private String vehicleRegistrationNumber;
 }
