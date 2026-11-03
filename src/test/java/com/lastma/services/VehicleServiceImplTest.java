@@ -62,4 +62,5 @@ class VehicleServiceImplTest {
         assertEquals(1, vehicleRepository.count());
     }
 
+
 }
