@@ -82,4 +82,16 @@ public class TicketServiceImpl implements  TicketService {
         return responses;
     }
 
+    @Override
+    public List<IssueTicketResponse> findAllTickets() {
+        List<Ticket> tickets = ticketRepository.findAll();
+        List<IssueTicketResponse> responses = new ArrayList<>();
+
+        for(Ticket ticket: tickets) {
+            responses.add(map(ticket));
+        }
+
+        return responses;
+    }
+
 }

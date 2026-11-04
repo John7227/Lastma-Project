@@ -111,4 +111,25 @@ class TicketServiceImplTest {
             assertEquals("XYZ-123XY", ticket.getVehicleRegistrationNumber());
         }
     }
+
+    @Test
+    public void testFindAllTickets_ReturnsAllSavedTickets() {
+        Ticket firstTicket = new Ticket();
+        firstTicket.setVehicleRegistrationNumber("XYZ-123XY");
+        firstTicket.setOffenceCode("JOH");
+        ticketRepository.save(firstTicket);
+
+        Ticket sameVehicleTicket = new Ticket();
+        sameVehicleTicket.setVehicleRegistrationNumber("XYZ-123XY");
+        sameVehicleTicket.setOffenceCode("SPD");
+        ticketRepository.save(sameVehicleTicket);
+
+        Ticket anotherVehicleTicket = new Ticket();
+        anotherVehicleTicket.setVehicleRegistrationNumber("ABC-123");
+        anotherVehicleTicket.setOffenceCode("YUP");
+        ticketRepository.save(anotherVehicleTicket);
+
+        List<IssueTicketResponse> tickets = ticketService.findAllTickets();
+        assertEquals(3, tickets.size());
+    }
 }

@@ -12,4 +12,5 @@ public interface TicketService {
     IssueTicketResponse issueTicket(IssueTicketRequest request);
     IssueTicketResponse findTicketById(String id);
     List<IssueTicketResponse> findTicketsByVehicleRegistrationNumber(String registrationNumber);
+    List<IssueTicketResponse> findAllTickets();
 }
