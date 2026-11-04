@@ -43,4 +43,14 @@ public class PaymentServiceImpl implements PaymentService {
         return map(savedPayment);
     }
 
+    @Override
+    public MakePaymentResponse findPaymentById(String id) {
+        Optional<Payment> result = paymentRepository.findById(id);
+        if(result.isEmpty()) {
+            throw new PaymentException("Payment not found");
+        }
+        Payment payment = result.get();
+        return map(payment);
+    }
+
 }

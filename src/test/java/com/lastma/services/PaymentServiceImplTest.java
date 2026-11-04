@@ -95,4 +95,25 @@ class PaymentServiceImplTest {
         assertThrows(PaymentException.class, ()-> paymentService.makePayment(request));
         assertEquals(0, paymentRepository.count());
     }
+
+    @Test
+    public void testFindPaymentById_ReturnsPaymentWhenFound() {
+        assertEquals(0, paymentRepository.count());
+
+        Ticket ticket = new Ticket();
+        ticket.setVehicleRegistrationNumber("XYZ-123XY");
+        ticket.setOffenceCode("JOH");
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        MakePaymentRequest request = new MakePaymentRequest();
+        request.setTicketId(savedTicket.getId());
+        request.setPaymentMethod("CARD");
+
+        MakePaymentResponse savedPayment = paymentService.makePayment(request);
+
+        MakePaymentResponse response = paymentService.findPaymentById(savedPayment.getId());
+
+        assertEquals("CARD", response.getPaymentMethod());
+        assertEquals(1, paymentRepository.count());
+    }
 }

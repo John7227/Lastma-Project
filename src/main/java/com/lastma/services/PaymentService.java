@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PaymentService {
     MakePaymentResponse makePayment(MakePaymentRequest request);
+    MakePaymentResponse findPaymentById(String id);
 }
