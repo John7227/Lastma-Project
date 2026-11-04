@@ -11,4 +11,5 @@ public interface ChallengeService {
     SubmitChallengeResponse submitChallenge(SubmitChallengeRequest request);
     SubmitChallengeResponse findChallengeById(String id);
     List<SubmitChallengeResponse> findChallengesByTicketId(String ticketId);
+    List<SubmitChallengeResponse> findAllChallenges();
 }

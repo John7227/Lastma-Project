@@ -151,4 +151,29 @@ class ChallengeServiceImplTest {
 
     }
 
+    @Test
+    public void testFindAllChallenges_ReturnsAllSavedChallenges() {
+        Challenge firstChallenge = new Challenge();
+        firstChallenge.setTicketId("ABC-XYZ");
+        firstChallenge.setReason("I was not at this location");
+        firstChallenge.setStatus("PENDING");
+        challengeRepository.save(firstChallenge);
+
+        Challenge secondChallenge = new Challenge();
+        secondChallenge.setTicketId("ABC-XYZ");
+        secondChallenge.setReason("The vehicle is not mine");
+        secondChallenge.setStatus("PENDING");
+        challengeRepository.save(secondChallenge);
+
+        Challenge anotherTicket = new Challenge();
+        anotherTicket.setTicketId("123-890");
+        anotherTicket.setReason("Foolish reason");
+        anotherTicket.setStatus("PENDING");
+        challengeRepository.save(anotherTicket);
+
+        List<SubmitChallengeResponse> responses = challengeService.findAllChallenges();
+
+        assertEquals(3, responses.size());
+    }
+
 }

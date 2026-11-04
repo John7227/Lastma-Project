@@ -66,4 +66,15 @@ public class ChallengeServiceImpl implements ChallengeService {
         return responses;
     }
 
+    @Override
+    public List<SubmitChallengeResponse> findAllChallenges() {
+        List<Challenge> challenges = challengeRepository.findAll();
+        List<SubmitChallengeResponse> responses = new ArrayList<>();
+
+        for(Challenge challenge: challenges) {
+            responses.add(map(challenge));
+        }
+        return responses;
+    }
+
 }
