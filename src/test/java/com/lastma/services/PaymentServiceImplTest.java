@@ -116,4 +116,9 @@ class PaymentServiceImplTest {
         assertEquals("CARD", response.getPaymentMethod());
         assertEquals(1, paymentRepository.count());
     }
+
+    @Test
+    public void testFindPaymentById_ThrowsException_WhenNotFound() {
+        assertThrows(PaymentException.class, ()-> paymentService.findPaymentById("ABC-6goat"));
+    }
 }
