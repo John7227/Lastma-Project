@@ -12,6 +12,7 @@ public class VehicleMapper {
         newVehicle.setMake(request.getMake());
         newVehicle.setModel(request.getModel());
         newVehicle.setColour(request.getColour());
+        newVehicle.setVehicleType(request.getVehicleType());
         return newVehicle;
     }
 
@@ -22,6 +23,7 @@ public class VehicleMapper {
         response.setMake(vehicle.getMake());
         response.setModel(vehicle.getModel());
         response.setColour(vehicle.getColour());
+        response.setVehicleType(vehicle.getVehicleType());
         return response;
     }
 }

@@ -1,10 +1,10 @@
 package com.lastma.services;
 
+import com.lastma.data.enums.VehicleType;
 import com.lastma.data.repositories.VehicleRepository;
 import com.lastma.dtos.requests.RegisterVehicleRequest;
 import com.lastma.dtos.response.RegisterVehicleResponse;
 import com.lastma.exceptions.DuplicateVehicleException;
-import com.lastma.exceptions.OffenceException;
 import com.lastma.exceptions.VehicleException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,10 +36,12 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel("Corolla");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.CAR);
 
         RegisterVehicleResponse savedVehicle = vehicleService.registerVehicle(request);
         assertNotNull(savedVehicle.getId());
         assertEquals("XYZ-123XY", savedVehicle.getRegistrationNumber());
+        assertEquals(VehicleType.CAR, savedVehicle.getVehicleType());
         assertEquals(1, vehicleRepository.count());
     }
 
@@ -52,6 +54,7 @@ class VehicleServiceImplTest {
         firstVehicle.setMake("Toyota");
         firstVehicle.setModel("Corolla");
         firstVehicle.setColour("Black");
+        firstVehicle.setVehicleType(VehicleType.BUS);
         vehicleService.registerVehicle(firstVehicle);
 
         RegisterVehicleRequest duplicateVehicle = new RegisterVehicleRequest();
@@ -73,6 +76,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel("Corolla");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.LORRY);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -87,6 +91,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel("Corolla");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.MINIBUS);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -101,6 +106,7 @@ class VehicleServiceImplTest {
         request.setMake(" ");
         request.setModel("Corolla");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.KOROKPE);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -115,6 +121,7 @@ class VehicleServiceImplTest {
         request.setMake(null);
         request.setModel("Corolla");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.TIPPER);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -129,6 +136,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel(" ");
         request.setColour("Black");
+        request.setVehicleType(VehicleType.VAN);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -143,6 +151,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel(null);
         request.setColour("Black");
+        request.setVehicleType(VehicleType.CAR);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -157,6 +166,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel("Corolla");
         request.setColour(" ");
+        request.setVehicleType(VehicleType.VAN);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -171,6 +181,7 @@ class VehicleServiceImplTest {
         request.setMake("Toyota");
         request.setModel("Corolla");
         request.setColour(null);
+        request.setVehicleType(VehicleType.LORRY);
 
         assertThrows(VehicleException.class, ()-> vehicleService.registerVehicle(request));
         assertEquals(0, vehicleRepository.count());
@@ -185,12 +196,14 @@ class VehicleServiceImplTest {
         firstVehicle.setMake("Toyota");
         firstVehicle.setModel("Corolla");
         firstVehicle.setColour("Black");
+        firstVehicle.setVehicleType(VehicleType.MINIBUS);
         RegisterVehicleResponse registered = vehicleService.registerVehicle(firstVehicle);
 
         RegisterVehicleResponse foundVehicle = vehicleService.findVehicleById(registered.getId());
         assertEquals("XYZ-123XY", foundVehicle.getRegistrationNumber());
         assertEquals("Toyota", foundVehicle.getMake());
         assertEquals("Corolla", foundVehicle.getModel());
+        assertEquals(VehicleType.MINIBUS, foundVehicle.getVehicleType());
         assertEquals(registered.getId(), foundVehicle.getId());
     }
 
@@ -209,12 +222,14 @@ class VehicleServiceImplTest {
         firstVehicle.setMake("Toyota");
         firstVehicle.setModel("Corolla");
         firstVehicle.setColour("Black");
+        firstVehicle.setVehicleType(VehicleType.CAR);
         RegisterVehicleResponse registered = vehicleService.registerVehicle(firstVehicle);
 
         RegisterVehicleResponse foundVehicle = vehicleService.findVehicleByRegistrationNumber("XYZ-123XY");
         assertEquals("XYZ-123XY", foundVehicle.getRegistrationNumber());
         assertEquals("Toyota", foundVehicle.getMake());
         assertEquals("Corolla", foundVehicle.getModel());
+        assertEquals(VehicleType.CAR, foundVehicle.getVehicleType());
         assertEquals(registered.getId(), foundVehicle.getId());
     }
 

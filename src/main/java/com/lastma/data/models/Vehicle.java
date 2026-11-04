@@ -16,7 +16,7 @@ public class Vehicle {
     private String make;
     private String model;
     private Year year;
-    private VehicleType Type;
+    private VehicleType vehicleType;
     private String driverId;
     private String plateNumber;
     private String colour;

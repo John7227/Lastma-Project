@@ -1,5 +1,6 @@
 package com.lastma.services;
 
+import com.lastma.data.enums.ViolationType;
 import com.lastma.data.repositories.OffenceRepository;
 import com.lastma.dtos.requests.AddOffenceRequest;
 import com.lastma.dtos.response.AddOffenceResponse;
@@ -35,6 +36,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -45,6 +47,7 @@ class OffenceServiceImplTest {
         assertNotNull(savedOffence.getId());
         assertEquals("JOH", savedOffence.getCode());
         assertEquals("Traffic Control Violation", savedOffence.getName());
+        assertEquals(ViolationType.TRAFFIC_CONTROL_VIOLATION, savedOffence.getViolationType());
         assertEquals(20000, savedOffence.getFirstOffenceFine());
         assertTrue(savedOffence.isActive());
         assertEquals(1, offenceRepository.count());
@@ -57,6 +60,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -80,6 +84,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -91,6 +96,7 @@ class OffenceServiceImplTest {
         request2.setCode("DAN");
         request2.setName("Illegal U-turn");
         request2.setDescription("Illegal U-turn");
+        request2.setViolationType(ViolationType.ILLEGAL_U_TURN);
         request2.setPenaltyPoints(3);
         request2.setFirstOffenceFine(20000);
         request2.setSubsequentOffenceFine(30000);
@@ -107,6 +113,7 @@ class OffenceServiceImplTest {
         request.setCode(" ");
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -123,6 +130,7 @@ class OffenceServiceImplTest {
         request.setCode(null);
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -139,6 +147,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName(" ");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -155,6 +164,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName(null);
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -171,6 +181,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription(" ");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -187,6 +198,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription(null);
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -203,6 +215,7 @@ class OffenceServiceImplTest {
         request.setCode("JOH");
         request.setName("Traffic Control Violation");
         request.setDescription("Disobeying traffic control personnel");
+        request.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         request.setPenaltyPoints(2);
         request.setFirstOffenceFine(20000);
         request.setSubsequentOffenceFine(30000);
@@ -216,6 +229,7 @@ class OffenceServiceImplTest {
         assertEquals("JOH", foundOffence.getCode());
         assertEquals("Traffic Control Violation", foundOffence.getName());
         assertEquals("Disobeying traffic control personnel", foundOffence.getDescription());
+        assertEquals(ViolationType.TRAFFIC_CONTROL_VIOLATION, foundOffence.getViolationType());
 
     }
 
@@ -231,6 +245,7 @@ class OffenceServiceImplTest {
         first.setCode("JOH");
         first.setName("Traffic Control Violation");
         first.setDescription("Disobeying traffic control personnel");
+        first.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         first.setPenaltyPoints(2);
         first.setFirstOffenceFine(20000);
         first.setSubsequentOffenceFine(30000);
@@ -242,6 +257,7 @@ class OffenceServiceImplTest {
         second.setCode("DAN");
         second.setName("Illegal U-turn");
         second.setDescription("Illegal U-turn");
+        second.setViolationType(ViolationType.ILLEGAL_U_TURN);
         second.setPenaltyPoints(3);
         second.setFirstOffenceFine(20000);
         second.setSubsequentOffenceFine(30000);
@@ -260,6 +276,7 @@ class OffenceServiceImplTest {
         first.setCode("JOH");
         first.setName("Traffic Control Violation");
         first.setDescription("Disobeying traffic control personnel");
+        first.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         first.setPenaltyPoints(2);
         first.setFirstOffenceFine(20000);
         first.setSubsequentOffenceFine(30000);
@@ -281,6 +298,7 @@ class OffenceServiceImplTest {
         first.setCode("JOH");
         first.setName("Traffic Control Violation");
         first.setDescription("Disobeying traffic control personnel");
+        first.setViolationType(ViolationType.TRAFFIC_CONTROL_VIOLATION);
         first.setPenaltyPoints(2);
         first.setFirstOffenceFine(20000);
         first.setSubsequentOffenceFine(30000);

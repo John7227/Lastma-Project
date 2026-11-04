@@ -15,6 +15,7 @@ public class OffenceMapper {
         newOffence.setFirstOffenceFine(request.getFirstOffenceFine());
         newOffence.setSubsequentOffenceFine(request.getSubsequentOffenceFine());
         newOffence.setAdditionalPenaltyDescription(request.getAdditionalPenaltyDescription());
+        newOffence.setViolationType(request.getViolationType());
         return newOffence;
     }
 
@@ -29,6 +30,7 @@ public class OffenceMapper {
         response.setSubsequentOffenceFine(offence.getSubsequentOffenceFine());
         response.setAdditionalPenaltyDescription(offence.getAdditionalPenaltyDescription());
         response.setActive(offence.isActive());
+        response.setViolationType(offence.getViolationType());
         return response;
     }
 }
