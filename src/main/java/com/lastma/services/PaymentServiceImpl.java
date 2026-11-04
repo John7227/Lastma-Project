@@ -69,4 +69,15 @@ public class PaymentServiceImpl implements PaymentService {
         return responses;
     }
 
+    @Override
+    public List<MakePaymentResponse> findAllPayments() {
+        List<Payment> payments = paymentRepository.findAll();
+        List<MakePaymentResponse> responses = new ArrayList<>();
+
+        for(Payment payment: payments) {
+            responses.add(map(payment));
+        }
+        return responses;
+    }
+
 }

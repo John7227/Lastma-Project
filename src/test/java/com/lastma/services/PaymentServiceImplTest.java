@@ -158,4 +158,23 @@ class PaymentServiceImplTest {
     public void testFindPaymentByTicketId_ThrowsException_WhenNotFound() {
         assertThrows(PaymentException.class, ()-> paymentService.findPaymentsByTicketId("ABC-6goat"));
     }
+
+    @Test
+    public void testFindAllPayments_ReturnsAllPayments() {
+        assertEquals(0, paymentRepository.count());
+
+        Payment firstPayment = new Payment();
+        firstPayment.setTicketId("ticket-123");
+        firstPayment.setPaymentMethod("CARD");
+        paymentRepository.save(firstPayment);
+
+        Payment secondPayment = new Payment();
+        secondPayment.setTicketId("ticket-123");
+        secondPayment.setPaymentMethod("CASH");
+        paymentRepository.save(secondPayment);
+
+        List<MakePaymentResponse> payments = paymentService.findAllPayments();
+
+        assertEquals(2, payments.size());
+    }
 }

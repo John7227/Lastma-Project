@@ -11,4 +11,5 @@ public interface PaymentService {
     MakePaymentResponse makePayment(MakePaymentRequest request);
     MakePaymentResponse findPaymentById(String id);
     List<MakePaymentResponse> findPaymentsByTicketId(String ticketId);
+    List<MakePaymentResponse> findAllPayments();
 }
