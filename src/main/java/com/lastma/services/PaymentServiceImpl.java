@@ -10,6 +10,8 @@ import com.lastma.exceptions.PaymentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.lastma.utils.PaymentMapper.map;
@@ -51,6 +53,20 @@ public class PaymentServiceImpl implements PaymentService {
         }
         Payment payment = result.get();
         return map(payment);
+    }
+
+    @Override
+    public List<MakePaymentResponse> findPaymentsByTicketId(String ticketId) {
+        List<Payment> payments = paymentRepository.findByTicketId(ticketId);
+        if(payments.isEmpty()) {
+            throw new PaymentException("No payment found for this ticket");
+        }
+
+        List<MakePaymentResponse> responses = new ArrayList<>();
+        for(Payment payment: payments) {
+            responses.add(map(payment));
+        }
+        return responses;
     }
 
 }

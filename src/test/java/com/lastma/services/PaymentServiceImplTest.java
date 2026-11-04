@@ -1,5 +1,6 @@
 package com.lastma.services;
 
+import com.lastma.data.models.Payment;
 import com.lastma.data.models.Ticket;
 import com.lastma.data.repositories.PaymentRepository;
 import com.lastma.data.repositories.TicketRepository;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -120,5 +123,39 @@ class PaymentServiceImplTest {
     @Test
     public void testFindPaymentById_ThrowsException_WhenNotFound() {
         assertThrows(PaymentException.class, ()-> paymentService.findPaymentById("ABC-6goat"));
+    }
+
+    @Test
+    public void testFindPaymentByTicketId_ReturnsPaymentsForThatTicket() {
+        assertEquals(0, paymentRepository.count());
+
+        Payment firstPayment = new Payment();
+        firstPayment.setTicketId("ticket-123");
+        firstPayment.setPaymentMethod("CARD");
+        paymentRepository.save(firstPayment);
+
+        Payment secondPayment = new Payment();
+        secondPayment.setTicketId("ticket-123");
+        secondPayment.setPaymentMethod("CASH");
+        paymentRepository.save(secondPayment);
+
+        Payment otherTicketPayment = new Payment();
+        otherTicketPayment.setTicketId("ticket-456");
+        otherTicketPayment.setPaymentMethod("CARD");
+        paymentRepository.save(otherTicketPayment);
+
+        List<MakePaymentResponse> payments = paymentService.findPaymentsByTicketId("ticket-123");
+
+        assertEquals(2, payments.size());
+
+        for(MakePaymentResponse payment: payments) {
+            assertEquals("ticket-123", payment.getTicketId());
+        }
+
+    }
+
+    @Test
+    public void testFindPaymentByTicketId_ThrowsException_WhenNotFound() {
+        assertThrows(PaymentException.class, ()-> paymentService.findPaymentsByTicketId("ABC-6goat"));
     }
 }
