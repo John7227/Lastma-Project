@@ -14,6 +14,8 @@ import com.lastma.exceptions.VehicleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.lastma.utils.TicketMapper.map;
@@ -67,6 +69,17 @@ public class TicketServiceImpl implements  TicketService {
 
         Ticket ticket = result.get();
         return map(ticket);
+    }
+
+    @Override
+    public List<IssueTicketResponse> findTicketsByVehicleRegistrationNumber(String registrationNumber) {
+        List<Ticket> tickets = ticketRepository.findByVehicleRegistrationNumber(registrationNumber);
+        List<IssueTicketResponse> responses = new ArrayList<>();
+
+        for(Ticket ticket: tickets) {
+            responses.add(map(ticket));
+        }
+        return responses;
     }
 
 }

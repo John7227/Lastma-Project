@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -83,5 +85,30 @@ class TicketServiceImplTest {
     @Test
     public void testFindTicketById_ThrowsExceptionWhenNotFound() {
         assertThrows(TicketException.class, ()-> ticketService.findTicketById("343DES-fats"));
+    }
+
+    @Test
+    public void testFindTicketsByVehicleRegistrationNumber_returnsTicketsForThatVehicle() {
+        Ticket firstTicket = new Ticket();
+        firstTicket.setVehicleRegistrationNumber("XYZ-123XY");
+        firstTicket.setOffenceCode("JOH");
+        ticketRepository.save(firstTicket);
+
+        Ticket sameVehicleTicket = new Ticket();
+        sameVehicleTicket.setVehicleRegistrationNumber("XYZ-123XY");
+        sameVehicleTicket.setOffenceCode("SPD");
+        ticketRepository.save(sameVehicleTicket);
+
+        Ticket anotherVehicleTicket = new Ticket();
+        anotherVehicleTicket.setVehicleRegistrationNumber("ABC-123");
+        anotherVehicleTicket.setOffenceCode("YUP");
+        ticketRepository.save(anotherVehicleTicket);
+
+        List<IssueTicketResponse> tickets = ticketService.findTicketsByVehicleRegistrationNumber("XYZ-123XY");
+        assertEquals(2, tickets.size());
+
+        for(IssueTicketResponse ticket: tickets) {
+            assertEquals("XYZ-123XY", ticket.getVehicleRegistrationNumber());
+        }
     }
 }
