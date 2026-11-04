@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.lastma.utils.ChallengeMapper.map;
@@ -51,6 +53,17 @@ public class ChallengeServiceImpl implements ChallengeService {
         Challenge challenge = result.get();
 
         return map(challenge);
+    }
+
+    @Override
+    public List<SubmitChallengeResponse> findChallengesByTicketId(String ticketId) {
+        List<Challenge> challenges = challengeRepository.findByTicketId(ticketId);
+        List<SubmitChallengeResponse> responses = new ArrayList<>();
+
+        for(Challenge challenge: challenges) {
+            responses.add(map(challenge));
+        }
+        return responses;
     }
 
 }

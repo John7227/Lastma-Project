@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +35,7 @@ class ChallengeServiceImplTest {
         ticketRepository.deleteAll();
     }
     @Test
-    public void testSubmitChallenge_SavesChallengeForExistingTicket() {
+    public void testSubmitChallenge_savesChallengeForExistingTicket() {
         assertEquals(0, challengeRepository.count());
         Ticket ticket = new Ticket();
         ticket.setVehicleRegistrationNumber("XYZ-123XY");
@@ -54,7 +55,7 @@ class ChallengeServiceImplTest {
     }
 
     @Test
-    public void testSubmitChallenge_ThrowsExceptionWhenTicketDoesNotExist() {
+    public void testSubmitChallenge_throwsExceptionWhenTicketDoesNotExist() {
         assertEquals(0, challengeRepository.count());
 
         SubmitChallengeRequest request = new SubmitChallengeRequest();
@@ -66,7 +67,7 @@ class ChallengeServiceImplTest {
     }
 
     @Test
-    public void testSubmitChallenge_ThrowsExceptionWhenReasonIsBlankAndDoesNotSave() {
+    public void testSubmitChallenge_throwsExceptionWhenReasonIsBlankAndDoesNotSave() {
         assertEquals(0, challengeRepository.count());
         Ticket ticket = new Ticket();
         ticket.setVehicleRegistrationNumber("XYZ-123XY");
@@ -82,7 +83,7 @@ class ChallengeServiceImplTest {
     }
 
     @Test
-    public void testSubmitChallenge_ThrowsExceptionWhenReasonIsNullAndDoesNotSave() {
+    public void testSubmitChallenge_throwsExceptionWhenReasonIsNullAndDoesNotSave() {
         assertEquals(0, challengeRepository.count());
         Ticket ticket = new Ticket();
         ticket.setVehicleRegistrationNumber("XYZ-123XY");
@@ -98,7 +99,7 @@ class ChallengeServiceImplTest {
     }
 
     @Test
-    public void testFindChallengeById_ReturnsIdWhenFound() {
+    public void testFindChallengeById_returnsIdWhenFound() {
         Challenge challenge = new Challenge();
         challenge.setTicketId("ABC-XYZ");
         challenge.setReason("I was not at this location");
@@ -116,8 +117,38 @@ class ChallengeServiceImplTest {
     }
 
     @Test
-    public void testFindChallengeById_ThrowsExceptionWhenNotFound() {
+    public void testFindChallengeById_throwsExceptionWhenNotFound() {
         assertThrows(ChallengeException.class, ()-> challengeService.findChallengeById("ABC-XYZ"));
+    }
+
+    @Test
+    public void testFindChallengesByTicketId_returnsChallengesForThatTicket() {
+        Challenge firstChallenge = new Challenge();
+        firstChallenge.setTicketId("ABC-XYZ");
+        firstChallenge.setReason("I was not at this location");
+        firstChallenge.setStatus("PENDING");
+        challengeRepository.save(firstChallenge);
+
+        Challenge secondChallenge = new Challenge();
+        secondChallenge.setTicketId("ABC-XYZ");
+        secondChallenge.setReason("The vehicle is not mine");
+        secondChallenge.setStatus("PENDING");
+        challengeRepository.save(secondChallenge);
+
+        Challenge anotherTicket = new Challenge();
+        anotherTicket.setTicketId("123-890");
+        anotherTicket.setReason("Foolish reason");
+        anotherTicket.setStatus("PENDING");
+        challengeRepository.save(anotherTicket);
+
+        List<SubmitChallengeResponse> responses = challengeService.findChallengesByTicketId("ABC-XYZ");
+
+        assertEquals(2, responses.size());
+
+        for(SubmitChallengeResponse response: responses) {
+            assertEquals("ABC-XYZ", response.getTicketId());
+        }
+
     }
 
 }
