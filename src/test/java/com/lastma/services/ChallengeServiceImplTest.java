@@ -5,6 +5,7 @@ import com.lastma.data.models.Ticket;
 import com.lastma.data.repositories.ChallengeRepository;
 import com.lastma.data.repositories.TicketRepository;
 import com.lastma.dtos.requests.SubmitChallengeRequest;
+import com.lastma.dtos.requests.UpdateChallengeStatusRequest;
 import com.lastma.dtos.response.SubmitChallengeResponse;
 import com.lastma.exceptions.ChallengeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,6 +175,36 @@ class ChallengeServiceImplTest {
         List<SubmitChallengeResponse> responses = challengeService.findAllChallenges();
 
         assertEquals(3, responses.size());
+    }
+
+    @Test
+    public void testUpdateChallengeStatus_updatesAndReturnsChallenge() {
+        Challenge firstChallenge = new Challenge();
+        firstChallenge.setTicketId("ABC-XYZ");
+        firstChallenge.setReason("I was not at this location");
+        firstChallenge.setStatus("PENDING");
+        Challenge savedChallenge = challengeRepository.save(firstChallenge);
+
+        UpdateChallengeStatusRequest request = new UpdateChallengeStatusRequest();
+        request.setStatus("ACCEPTED");
+        request.setDecisionNotes("The evidence supports the challenge");
+        request.setReviewedByOfficerId("ABC-XYZ");
+
+        SubmitChallengeResponse response = challengeService.updateChallengeStatus(savedChallenge.getId(), request);
+
+        assertEquals("ACCEPTED", response.getStatus());
+        assertEquals("The evidence supports the challenge", response.getDecisionNotes());
+        assertEquals("ABC-XYZ", response.getReviewedByOfficerId());
+    }
+
+    @Test
+    public void testUpdateChallengeStatus_throwsExceptionWhenChallengeDoesNotExist() {
+        UpdateChallengeStatusRequest request = new UpdateChallengeStatusRequest();
+        request.setStatus("ACCEPTED");
+        request.setDecisionNotes("The evidence supports the challenge");
+        request.setReviewedByOfficerId("ABC-XYZ");
+
+        assertThrows(ChallengeException.class, ()-> challengeService.updateChallengeStatus("ABC-XYZ", request));
     }
 
 }

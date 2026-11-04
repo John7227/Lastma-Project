@@ -11,6 +11,8 @@ public class SubmitChallengeResponse {
     private String ticketId;
     private String reason;
     private String status;
+    private String decisionNotes;
+    private String reviewedByOfficerId;
     private LocalDate submittedAt;
-
+    private LocalDate reviewedAt;
 }

@@ -1,6 +1,7 @@
 package com.lastma.services;
 
 import com.lastma.dtos.requests.SubmitChallengeRequest;
+import com.lastma.dtos.requests.UpdateChallengeStatusRequest;
 import com.lastma.dtos.response.SubmitChallengeResponse;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,5 @@ public interface ChallengeService {
     SubmitChallengeResponse findChallengeById(String id);
     List<SubmitChallengeResponse> findChallengesByTicketId(String ticketId);
     List<SubmitChallengeResponse> findAllChallenges();
+    SubmitChallengeResponse updateChallengeStatus(String id, UpdateChallengeStatusRequest request);
 }

@@ -12,6 +12,10 @@ public class ChallengeMapper {
         response.setReason(challenge.getReason());
         response.setStatus(challenge.getStatus());
         response.setSubmittedAt(challenge.getSubmittedAt());
+        response.setDecisionNotes(challenge.getDecisionNotes());
+        response.setReviewedByOfficerId(challenge.getReviewedByOfficerId());
+        response.setReviewedAt(challenge.getReviewedAt());
         return response;
     }
+
 }

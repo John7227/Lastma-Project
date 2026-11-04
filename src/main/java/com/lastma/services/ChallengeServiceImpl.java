@@ -4,6 +4,7 @@ import com.lastma.data.models.Challenge;
 import com.lastma.data.repositories.ChallengeRepository;
 import com.lastma.data.repositories.TicketRepository;
 import com.lastma.dtos.requests.SubmitChallengeRequest;
+import com.lastma.dtos.requests.UpdateChallengeStatusRequest;
 import com.lastma.dtos.response.SubmitChallengeResponse;
 import com.lastma.exceptions.ChallengeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,23 @@ public class ChallengeServiceImpl implements ChallengeService {
             responses.add(map(challenge));
         }
         return responses;
+    }
+
+    @Override
+    public SubmitChallengeResponse updateChallengeStatus(String id, UpdateChallengeStatusRequest request) {
+        Optional<Challenge> result = challengeRepository.findById(id);
+        if(result.isEmpty()) {
+            throw new ChallengeException("Challenge not found");
+        }
+        Challenge challenge = result.get();
+
+        challenge.setStatus(request.getStatus());
+        challenge.setDecisionNotes(request.getDecisionNotes());
+        challenge.setReviewedByOfficerId(request.getReviewedByOfficerId());
+        challenge.setReviewedAt(LocalDate.now());
+
+        Challenge updatedChallenge = challengeRepository.save(challenge);
+        return map(updatedChallenge);
     }
 
 }
