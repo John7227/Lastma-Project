@@ -14,6 +14,7 @@ public class Payment {
     @Id
     private String id;
     private String ticketId;
+    private String paymentMethod;
     private String paymentReference;
     private BigDecimal amount;
     private LocalDateTime paymentDate;

@@ -13,6 +13,7 @@ public class Ticket {
     @Id
     private String id;
     private String offenceId;
+    private String paymentMethod;
     private String vehicleId;
     private String issuedByOfficerId;
     private String ticketNumber;
