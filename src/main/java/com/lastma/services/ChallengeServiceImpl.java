@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static com.lastma.utils.ChallengeMapper.map;
 
@@ -39,6 +40,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         Challenge savedChallenge = challengeRepository.save(challenge);
         return map(savedChallenge);
+    }
+
+    @Override
+    public SubmitChallengeResponse findChallengeById(String id) {
+        Optional<Challenge> result = challengeRepository.findById(id);
+        if(result.isEmpty()) {
+            throw new ChallengeException("Challenge not found");
+        }
+        Challenge challenge = result.get();
+
+        return map(challenge);
     }
 
 }
